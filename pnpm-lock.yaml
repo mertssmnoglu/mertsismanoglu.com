@@ -18,8 +18,8 @@ importers:
         specifier: ^4.0.9
         version: 4.0.9
       '@astrojs/sitemap':
-        specifier: ^3.2.1
-        version: 3.2.1
+        specifier: ^3.3.0
+        version: 3.3.0
       '@astrojs/tailwind':
         specifier: ^5.1.2
         version: 5.1.2(astro@4.16.18(@types/node@17.0.45)(rollup@4.27.2)(typescript@5.8.2))(tailwindcss@3.4.15)
@@ -87,8 +87,8 @@ packages:
   '@astrojs/rss@4.0.9':
     resolution: {integrity: sha512-W1qeLc/WP1vMS5xXa+BnaLU0paeSeGjN8RJVAoBaOIkQuKXjIUA9hvPno89heo73in5i67g40gy70oeeHMqp6A==}
 
-  '@astrojs/sitemap@3.2.1':
-    resolution: {integrity: sha512-uxMfO8f7pALq0ADL6Lk68UV6dNYjJ2xGUzyjjVj60JLBs5a6smtlkBYv3tQ0DzoqwS7c9n4FUx5lgv0yPo/fgA==}
+  '@astrojs/sitemap@3.3.0':
+    resolution: {integrity: sha512-nYE4lKQtk+Kbrw/w0G0TTgT724co0jUsU4tPlHY9au5HmTBKbwiCLwO/15b1/y13aZ4Kr9ZbMeMHlXuwn0ty4Q==}
 
   '@astrojs/tailwind@5.1.2':
     resolution: {integrity: sha512-IvOF0W/dtHElcXvhrPR35nHmhyV3cfz1EzPitMGtU7sYy9Hci3BNK1To6FWmVuuNKPxza1IgCGetSynJZL7fOg==}
@@ -2359,6 +2359,9 @@ packages:
   zod@3.23.8:
     resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
 
+  zod@3.24.3:
+    resolution: {integrity: sha512-HhY1oqzWCQWuUqvBFnsyrtZRhyPeR7SUGv+C4+MsisMuVfSPx8HpwWqH8tRahSlt6M3PiFAcoeFhZAqIXTxoSg==}
+
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
 
@@ -2463,11 +2466,11 @@ snapshots:
       fast-xml-parser: 4.5.0
       kleur: 4.1.5
 
-  '@astrojs/sitemap@3.2.1':
+  '@astrojs/sitemap@3.3.0':
     dependencies:
       sitemap: 8.0.0
       stream-replace-string: 2.0.0
-      zod: 3.23.8
+      zod: 3.24.3
 
   '@astrojs/tailwind@5.1.2(astro@4.16.18(@types/node@17.0.45)(rollup@4.27.2)(typescript@5.8.2))(tailwindcss@3.4.15)':
     dependencies:
@@ -5224,5 +5227,7 @@ snapshots:
       zod: 3.23.8
 
   zod@3.23.8: {}
+
+  zod@3.24.3: {}
 
   zwitch@2.0.4: {}
