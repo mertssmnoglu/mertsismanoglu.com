@@ -3,4 +3,4 @@
 
 export const SITE_TITLE = 'Mert Şişmanoğlu'
 export const SITE_DESCRIPTION = 'Mert Şişmanoğlu Kişisel Web Sitesi'
-export const SITE_URL = 'https://mertssmnoglu.com'
+export const SITE_URL = 'https://mertsismanoglu.com'
