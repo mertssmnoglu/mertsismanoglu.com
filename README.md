@@ -146,5 +146,8 @@ Your content goes here...
 
 ## License
 
-This project is licensed under the MIT License - see the
-[LICENSE](LICENSE) file for details.
+Source code is licensed under the **MIT** License.
+See the [LICENSE](LICENSE) file for details.
+
+Documentation and content are licensed under **CC BY-SA 4.0**.
+See the [LICENSE-CONTENT](LICENSE-CONTENT) file for details.

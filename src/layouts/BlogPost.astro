@@ -74,6 +74,16 @@ const canonicalUrl = Astro.url ? new URL(Astro.url.pathname, SITE_URL).toString(
 			.last-updated-on {
 				font-style: italic;
 			}
+			.post-license {
+				margin-top: 2rem;
+				padding-top: 1rem;
+				border-top: 1px solid rgb(var(--gray-light));
+				font-size: 0.95rem;
+				color: rgb(var(--gray));
+			}
+			.post-license a {
+				color: var(--accent);
+			}
 		</style>
 	</head>
 
@@ -102,6 +112,13 @@ const canonicalUrl = Astro.url ? new URL(Astro.url.pathname, SITE_URL).toString(
 					</div>
 					<slot />
 					{showShareButtons && <ShareButtons title={title} url={canonicalUrl} />}
+					<footer class="post-license">
+						<p>
+							&copy; 2026 Mert Şişmanoğlu. This post is licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.tr" target="_blank" rel="license noopener noreferrer">
+								CC BY-SA 4.0
+							</a>.
+						</p>
+					</footer>
 				</div>
 			</article>
 		</main>
