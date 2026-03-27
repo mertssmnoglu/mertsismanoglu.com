@@ -1,0 +1,88 @@
+---
+import BaseHead from '../components/BaseHead.astro'
+import Footer from '../components/Footer.astro'
+import Header from '../components/Header.astro'
+import ThemeInit from '../components/ThemeInit.astro'
+import { SITE_TITLE } from '../consts'
+
+const pageTitle = `404 | ${SITE_TITLE}`
+const description = 'The page you requested could not be found.'
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<ThemeInit />
+		<BaseHead title={pageTitle} description={description} />
+		<meta name="robots" content="noindex" />
+	</head>
+	<body>
+		<Header />
+		<main class="not-found">
+			<p class="status">404</p>
+			<h1>Page not found</h1>
+			<p>
+				The page may have moved, been renamed, or never existed.
+			</p>
+			<div class="actions">
+				<a href="/">Go home</a>
+				<a href="/blog">Read the blog</a>
+			</div>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.not-found {
+		display: grid;
+		gap: 1rem;
+		text-align: center;
+		justify-items: center;
+		padding-top: 4rem;
+		padding-bottom: 4rem;
+	}
+
+	.status {
+		margin: 0;
+		font-size: 0.95rem;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: rgb(var(--gray));
+	}
+
+	.not-found h1 {
+		margin: 0;
+		font-size: clamp(2rem, 7vw, 3rem);
+	}
+
+	.not-found p {
+		max-width: 42ch;
+		margin: 0;
+	}
+
+	.actions {
+		display: flex;
+		gap: 0.75rem;
+		flex-wrap: wrap;
+		justify-content: center;
+		margin-top: 0.25rem;
+	}
+
+	.actions a {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.6rem 1rem;
+		border-radius: 999px;
+		text-decoration: none;
+		border: 1px solid rgb(var(--gray-light));
+		color: rgb(var(--black));
+		background: color-mix(in srgb, var(--bg-end), transparent 15%);
+	}
+
+	.actions a:hover {
+		border-color: var(--accent);
+		color: var(--accent);
+	}
+</style>
