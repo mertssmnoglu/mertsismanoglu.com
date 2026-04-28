@@ -36,6 +36,39 @@ const allCategories = [...new Set(posts.flatMap((p) => p.data.categories ?? []))
 			h1 {
 				margin-bottom: 1rem;
 			}
+			.search-wrapper {
+				position: relative;
+				margin-bottom: 1rem;
+			}
+			.search-icon {
+				position: absolute;
+				left: 0.75rem;
+				top: 50%;
+				transform: translateY(-50%);
+				width: 1rem;
+				height: 1rem;
+				color: rgb(var(--gray));
+				pointer-events: none;
+			}
+			.search-input {
+				width: 100%;
+				box-sizing: border-box;
+				padding: 0.5rem 0.75rem 0.5rem 2.25rem;
+				border: 1px solid rgb(var(--gray-light));
+				border-radius: 8px;
+				background: transparent;
+				font-family: inherit;
+				font-size: 1rem;
+				color: rgb(var(--black));
+				outline: none;
+				transition: border-color 0.15s ease;
+			}
+			.search-input::placeholder {
+				color: rgb(var(--gray));
+			}
+			.search-input:focus {
+				border-color: rgb(var(--accent));
+			}
 			.filters {
 				display: flex;
 				flex-wrap: wrap;
@@ -64,6 +97,12 @@ const allCategories = [...new Set(posts.flatMap((p) => p.data.categories ?? []))
 				background-color: rgb(var(--accent));
 				border-color: rgb(var(--accent));
 				color: #fff;
+			}
+			.no-results {
+				display: none;
+				padding: 2rem 0;
+				color: rgb(var(--gray));
+				font-size: 0.95rem;
 			}
 			ul {
 				list-style-type: none;
@@ -129,6 +168,19 @@ const allCategories = [...new Set(posts.flatMap((p) => p.data.categories ?? []))
 		<main>
 			<section>
 				<h1>Blog</h1>
+				<div class="search-wrapper">
+					<svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<circle cx="11" cy="11" r="8"/>
+						<line x1="21" y1="21" x2="16.65" y2="16.65"/>
+					</svg>
+					<input
+						class="search-input"
+						type="search"
+						placeholder="Search posts…"
+						aria-label="Search blog posts"
+						id="search-input"
+					/>
+				</div>
 				{allCategories.length > 0 && (
 					<div class="filters" role="group" aria-label="Filter by category">
 						<button class="filter-btn active" data-category="all">All</button>
@@ -140,7 +192,11 @@ const allCategories = [...new Set(posts.flatMap((p) => p.data.categories ?? []))
 				<ul>
 					{
 						posts.map((post) => (
-							<li data-categories={JSON.stringify(post.data.categories ?? [])}>
+							<li
+								data-categories={JSON.stringify(post.data.categories ?? [])}
+								data-title={post.data.title.toLowerCase()}
+								data-description={(post.data.description ?? '').toLowerCase()}
+							>
 								<a href={`/blog/${post.id}/`}>
 									{post.data.heroImage && (
 										<Image
@@ -162,56 +218,69 @@ const allCategories = [...new Set(posts.flatMap((p) => p.data.categories ?? []))
 						))
 					}
 				</ul>
+				<p class="no-results" id="no-results">No posts found.</p>
 			</section>
 		</main>
 		<Footer />
 		<script>
 			const buttons = document.querySelectorAll<HTMLButtonElement>('.filter-btn')
 			const items = document.querySelectorAll<HTMLLIElement>('ul li[data-categories]')
+			const searchInput = document.getElementById('search-input') as HTMLInputElement
+			const noResults = document.getElementById('no-results') as HTMLParagraphElement
 			let active = new Set<string>()
+			let query = ''
 
 			function applyFilter() {
-				const allBtn = document.querySelector<HTMLButtonElement>('.filter-btn[data-category="all"]')!
 				const isAll = active.size === 0
 
-				allBtn.classList.toggle('active', isAll)
+				document.querySelector<HTMLButtonElement>('.filter-btn[data-category="all"]')!
+					.classList.toggle('active', isAll)
 				buttons.forEach((b) => {
-					if (b.dataset.category !== 'all') {
+					if (b.dataset.category !== 'all')
 						b.classList.toggle('active', active.has(b.dataset.category!))
-					}
 				})
 
+				let visible = 0
 				items.forEach((item) => {
 					const cats: string[] = JSON.parse(item.dataset.categories!)
-					const show = isAll || cats.some((c) => active.has(c))
+					const matchesCategory = isAll || cats.some((c) => active.has(c))
+					const matchesSearch =
+						!query ||
+						item.dataset.title!.includes(query) ||
+						item.dataset.description!.includes(query)
+					const show = matchesCategory && matchesSearch
 					item.classList.toggle('hidden', !show)
+					if (show) visible++
 				})
 
+				noResults.style.display = visible === 0 ? 'block' : 'none'
+
 				const url = new URL(location.href)
-				if (isAll) {
-					url.searchParams.delete('categories')
-				} else {
-					url.searchParams.set('categories', [...active].join(','))
-				}
+				isAll ? url.searchParams.delete('categories') : url.searchParams.set('categories', [...active].join(','))
+				query ? url.searchParams.set('q', query) : url.searchParams.delete('q')
 				history.replaceState(null, '', url)
 			}
 
-			const initial = new URLSearchParams(location.search).get('categories')
-			if (initial) initial.split(',').forEach((c) => active.add(decodeURIComponent(c.trim())))
+			const params = new URLSearchParams(location.search)
+			const initialCats = params.get('categories')
+			if (initialCats) initialCats.split(',').forEach((c) => active.add(decodeURIComponent(c.trim())))
+			const initialQ = params.get('q')
+			if (initialQ) { query = initialQ.toLowerCase(); searchInput.value = initialQ }
 			applyFilter()
 
 			buttons.forEach((btn) => {
 				btn.addEventListener('click', () => {
 					const cat = btn.dataset.category!
-					if (cat === 'all') {
-						active.clear()
-					} else if (active.has(cat)) {
-						active.delete(cat)
-					} else {
-						active.add(cat)
-					}
+					if (cat === 'all') active.clear()
+					else if (active.has(cat)) active.delete(cat)
+					else active.add(cat)
 					applyFilter()
 				})
+			})
+
+			searchInput.addEventListener('input', () => {
+				query = searchInput.value.trim().toLowerCase()
+				applyFilter()
 			})
 		</script>
 	</body>

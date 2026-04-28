@@ -4,5 +4,5 @@
   <Description>Search mertsismanoglu.com</Description>
   <InputEncoding>UTF-8</InputEncoding>
   <Image width="16" height="16" type="image/jpeg">https://mertsismanoglu.com/photos/mert_sismanoglu-formal_square.jpg</Image>
-  <Url type="text/html" template="https://www.google.com/search?q={searchTerms}+site:mertsismanoglu.com"/>
+  <Url type="text/html" template="https://mertsismanoglu.com/blog/?q={searchTerms}"/>
 </OpenSearchDescription>
