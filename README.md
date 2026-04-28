@@ -2,6 +2,7 @@
 
 [![Built with Astro](https://astro.badg.es/v2/built-with-astro/tiny.svg)](https://astro.build)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-sa/4.0/)
 
 Based on the [Astro blog template](https://github.com/withastro/astro/tree/latest/examples/blog),
 this SEO-optimized personal blog website is built with [Astro](https://astro.build).
@@ -123,6 +124,8 @@ title: "Your Post Title"
 description: "A brief description of your post"
 pubDate: "2025-01-15"
 heroImage: "/blog-placeholder-1.jpg"
+license: "CC-BY-SA-4.0"
+categories: ["category-a", "category-b"]
 ---
 
 Your content goes here...
@@ -134,7 +137,17 @@ Your content goes here...
 - `description`: A brief description for SEO and previews
 - `pubDate`: Publication date in YYYY-MM-DD format
 - `heroImage`: Path to hero image (optional)
-- `tags`: Array of tags for categorization (optional)
+- `updatedDate`: Last updated date in YYYY-MM-DD format (optional)
+- `license`: License key for the post (optional, defaults to `CC-BY-SA-4.0`).
+  > Available keys are defined in `src/data/licenses.ts`:
+  - `CC-BY-SA-4.0` (default)
+  - `CC-BY-4.0`
+  - `CC-BY-NC-4.0`
+  - `CC-BY-NC-SA-4.0`
+  - `CC0-1.0`
+  - `MIT`
+- `categories`: Array of category strings for filtering (optional).
+   > Example: `['automation', 'cli']`
 
 ## Contributing
 
@@ -149,5 +162,6 @@ Your content goes here...
 Source code is licensed under the **MIT** License.
 See the [LICENSE](LICENSE) file for details.
 
-Documentation and content are licensed under **CC BY-SA 4.0**.
-See the [LICENSE-CONTENT](LICENSE-CONTENT) file for details.
+Documentation and content are licensed under **CC BY-SA 4.0 by default**.
+See the [LICENSE-CONTENT](LICENSE-CONTENT) file for details, and refer to
+blog post frontmatter for specific licenses on individual posts.
