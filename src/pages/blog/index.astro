@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets'
 import { getCollection } from 'astro:content'
 import BaseHead from '../../components/BaseHead.astro'
 import Footer from '../../components/Footer.astro'
@@ -11,6 +12,8 @@ import { calculateReadingTime } from '../../utils/readingTime'
 const posts = (await getCollection('blog')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 )
+
+const allCategories = [...new Set(posts.flatMap((p) => p.data.categories ?? []))].sort()
 ---
 
 <!doctype html>
@@ -20,70 +23,103 @@ const posts = (await getCollection('blog')).sort(
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 		<style>
 			main {
-				width: 960px;
+				width: 720px;
+				max-width: calc(100% - 2em);
+				margin: 0 auto;
+				padding: 1em;
 			}
-			ul {
+			@media (min-width: 768px) {
+				main {
+					width: 960px;
+				}
+			}
+			h1 {
+				margin-bottom: 1rem;
+			}
+			.filters {
 				display: flex;
 				flex-wrap: wrap;
-				gap: 2rem;
+				gap: 0.5rem;
+				margin-bottom: 1.5rem;
+			}
+			.filter-btn {
+				all: unset;
+				box-sizing: border-box;
+				display: inline-block;
+				padding: 0.3rem 0.75rem;
+				border: 1px solid rgb(var(--gray-light));
+				border-radius: 999px;
+				font-family: inherit;
+				font-size: 0.8rem;
+				line-height: 1.5;
+				color: rgb(var(--gray));
+				cursor: pointer;
+				transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+			}
+			.filter-btn:hover {
+				border-color: rgb(var(--accent));
+				color: rgb(var(--accent));
+			}
+			.filter-btn.active {
+				background-color: rgb(var(--accent));
+				border-color: rgb(var(--accent));
+				color: #fff;
+			}
+			ul {
 				list-style-type: none;
 				margin: 0;
 				padding: 0;
 			}
 			ul li {
-				width: calc(50% - 1rem);
+				border-bottom: 1px solid rgb(var(--gray-light));
 			}
-			ul li * {
-				text-decoration: none;
-				transition: 0.2s ease;
+			ul li:last-child {
+				border-bottom: none;
 			}
-			ul li:first-child {
-				width: 100%;
-				margin-bottom: 1rem;
-				text-align: center;
-			}
-			ul li:first-child img {
-				width: 100%;
-			}
-			ul li:first-child .title {
-				font-size: 2.369rem;
-			}
-			ul li img {
-				margin-bottom: 0.5rem;
-				border-radius: 12px;
+			ul li.hidden {
+				display: none;
 			}
 			ul li a {
-				display: block;
+				display: flex;
+				align-items: flex-start;
+				gap: 1rem;
+				padding: 0.85rem 0;
+				text-decoration: none;
+				transition: color 0.2s ease;
+			}
+			.thumbnail {
+				flex-shrink: 0;
+				width: 160px;
+				aspect-ratio: 16 / 9;
+				object-fit: cover;
+				border-radius: 8px;
+			}
+			.post-info {
+				display: flex;
+				flex: 1;
+				flex-direction: column;
+				gap: 0.3rem;
+				min-width: 0;
 			}
 			.title {
 				margin: 0;
+				font-size: 1.1rem;
+				font-weight: 600;
 				color: rgb(var(--black));
-				line-height: 1;
 			}
-			.date {
-				margin: 0;
+			.meta {
+				font-size: 0.875rem;
 				color: rgb(var(--gray));
 			}
-			ul li a:hover h4,
-			ul li a:hover .date {
+			ul li a:hover .title {
 				color: rgb(var(--accent));
 			}
-			ul a:hover img {
-				box-shadow: var(--box-shadow);
+			ul li a:hover .meta {
+				color: rgb(var(--accent));
 			}
-			@media (max-width: 720px) {
-				ul {
-					gap: 0.5em;
-				}
-				ul li {
-					width: 100%;
-					text-align: center;
-				}
-				ul li:first-child {
-					margin-bottom: 0;
-				}
-				ul li:first-child .title {
-					font-size: 1.563em;
+			@media (max-width: 480px) {
+				.thumbnail {
+					width: 100px;
 				}
 			}
 		</style>
@@ -92,16 +128,35 @@ const posts = (await getCollection('blog')).sort(
 		<Header />
 		<main>
 			<section>
+				<h1>Blog</h1>
+				{allCategories.length > 0 && (
+					<div class="filters" role="group" aria-label="Filter by category">
+						<button class="filter-btn active" data-category="all">All</button>
+						{allCategories.map((cat) => (
+							<button class="filter-btn" data-category={cat}>{cat}</button>
+						))}
+					</div>
+				)}
 				<ul>
 					{
 						posts.map((post) => (
-							<li>
+							<li data-categories={JSON.stringify(post.data.categories ?? [])}>
 								<a href={`/blog/${post.id}/`}>
-									<img width={720} height={360} src={post.data.heroImage} alt="" />
-									<h4 class="title">{post.data.title}</h4>
-									<p class="date">
-									<FormattedDate date={post.data.pubDate} /> • {calculateReadingTime(post.body)}
-									</p>
+									{post.data.heroImage && (
+										<Image
+											class="thumbnail"
+											src={post.data.heroImage}
+											width={320}
+											height={180}
+											alt=""
+										/>
+									)}
+									<span class="post-info">
+										<span class="title">{post.data.title}</span>
+										<span class="meta">
+											<FormattedDate date={post.data.pubDate} /> · {calculateReadingTime(post.body)}
+										</span>
+									</span>
 								</a>
 							</li>
 						))
@@ -110,5 +165,54 @@ const posts = (await getCollection('blog')).sort(
 			</section>
 		</main>
 		<Footer />
+		<script>
+			const buttons = document.querySelectorAll<HTMLButtonElement>('.filter-btn')
+			const items = document.querySelectorAll<HTMLLIElement>('ul li[data-categories]')
+			let active = new Set<string>()
+
+			function applyFilter() {
+				const allBtn = document.querySelector<HTMLButtonElement>('.filter-btn[data-category="all"]')!
+				const isAll = active.size === 0
+
+				allBtn.classList.toggle('active', isAll)
+				buttons.forEach((b) => {
+					if (b.dataset.category !== 'all') {
+						b.classList.toggle('active', active.has(b.dataset.category!))
+					}
+				})
+
+				items.forEach((item) => {
+					const cats: string[] = JSON.parse(item.dataset.categories!)
+					const show = isAll || cats.some((c) => active.has(c))
+					item.classList.toggle('hidden', !show)
+				})
+
+				const url = new URL(location.href)
+				if (isAll) {
+					url.searchParams.delete('categories')
+				} else {
+					url.searchParams.set('categories', [...active].join(','))
+				}
+				history.replaceState(null, '', url)
+			}
+
+			const initial = new URLSearchParams(location.search).get('categories')
+			if (initial) initial.split(',').forEach((c) => active.add(decodeURIComponent(c.trim())))
+			applyFilter()
+
+			buttons.forEach((btn) => {
+				btn.addEventListener('click', () => {
+					const cat = btn.dataset.category!
+					if (cat === 'all') {
+						active.clear()
+					} else if (active.has(cat)) {
+						active.delete(cat)
+					} else {
+						active.add(cat)
+					}
+					applyFilter()
+				})
+			})
+		</script>
 	</body>
 </html>

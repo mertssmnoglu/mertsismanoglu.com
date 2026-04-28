@@ -70,6 +70,7 @@ main {
 }
 @media (min-width: 768px) {
   main {
+    width: 960px;
     padding: 3em 1em;
   }
 }

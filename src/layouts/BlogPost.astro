@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets'
 import type { CollectionEntry } from 'astro:content'
 import BaseHead from '../components/BaseHead.astro'
 import Footer from '../components/Footer.astro'
@@ -7,6 +8,7 @@ import Header from '../components/Header.astro'
 import ShareButtons from '../components/ShareButtons.astro'
 import ThemeInit from '../components/ThemeInit.astro'
 import { SITE_URL } from '../consts'
+import { DEFAULT_CONTENT_LICENSE, LICENSES } from '../data/licenses'
 
 type Props = CollectionEntry<'blog'>['data'] & {
   showShareButtons?: boolean
@@ -22,15 +24,19 @@ const {
   smallHeroImage,
   showShareButtons = true,
   readingTime,
+  license,
+  categories,
 } = Astro.props
 const canonicalUrl = Astro.url ? new URL(Astro.url.pathname, SITE_URL).toString() : SITE_URL
+const licenseData =
+  LICENSES[license ?? DEFAULT_CONTENT_LICENSE] ?? LICENSES[DEFAULT_CONTENT_LICENSE]
 ---
 
 <html lang="en">
 	<head>
 		<ThemeInit />
 		<meta name="fediverse:creator" content="@mertssmnoglu@mastodon.social">
-		<BaseHead title={title} description={description} image={heroImage} />
+		<BaseHead title={title} description={description} image={heroImage} licenseUrl={licenseData.url} />
 		<style>
 			main {
 				width: calc(100% - 2em);
@@ -74,6 +80,37 @@ const canonicalUrl = Astro.url ? new URL(Astro.url.pathname, SITE_URL).toString(
 			.last-updated-on {
 				font-style: italic;
 			}
+			.title hr {
+				width: 4rem;
+				margin: 1rem auto 0;
+			}
+			@media (min-width: 768px) {
+				.prose {
+					width: 960px;
+				}
+			}
+			.categories {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.5rem;
+				margin-top: 1rem;
+				justify-content: center;
+			}
+			.category-tag {
+				display: inline-block;
+				padding: 0.35rem 1rem;
+				border: 1px solid rgb(var(--gray-light));
+				border-radius: 999px;
+				font-size: 0.95rem;
+				line-height: 1.5;
+				color: rgb(var(--gray));
+				text-decoration: none;
+				transition: border-color 0.15s ease, color 0.15s ease;
+			}
+			.category-tag:hover {
+				border-color: rgb(var(--accent));
+				color: rgb(var(--accent));
+			}
 			.post-license {
 				margin-top: 2rem;
 				padding-top: 1rem;
@@ -92,7 +129,7 @@ const canonicalUrl = Astro.url ? new URL(Astro.url.pathname, SITE_URL).toString(
 		<main>
 			<article>
 				<div class={smallHeroImage ? "small-hero-image hero-image" : "hero-image"}>
-					{heroImage && <img width={1020} height={510} src={heroImage} alt="" />}
+					{heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
 				</div>
 				<div class="prose">
 					<div class="title">
@@ -108,14 +145,21 @@ const canonicalUrl = Astro.url ? new URL(Astro.url.pathname, SITE_URL).toString(
 							}
 						</div>
 						<h1>{title}</h1>
+						{categories && categories.length > 0 && (
+							<div class="categories">
+								{categories.map((cat: string) => (
+									<a class="category-tag" href={`/blog/?categories=${encodeURIComponent(cat)}`}>{cat}</a>
+								))}
+							</div>
+						)}
 						<hr />
 					</div>
 					<slot />
 					{showShareButtons && <ShareButtons title={title} url={canonicalUrl} />}
 					<footer class="post-license">
 						<p>
-							&copy; 2026 Mert Şişmanoğlu. This post is licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.tr" target="_blank" rel="license noopener noreferrer">
-								CC BY-SA 4.0
+							&copy; 2026 Mert Şişmanoğlu. This post is licensed under <a href={licenseData.url} target="_blank" rel="license noopener noreferrer">
+								{licenseData.shortName}
 							</a>.
 						</p>
 					</footer>

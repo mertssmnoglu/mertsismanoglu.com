@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets'
+
 const today = new Date()
 
 import AnalyticsInformationModal from './AnalyticsInformationModal.astro'
@@ -17,7 +19,7 @@ import SocialLinks from './SocialLinks.astro'
 			<span id="analytics-status"></span>
 		</button>
 		<button id="analytics-info" class="analytics-info" title="Analytics Information" data-modal-open="analytics-modal">
-			<img src="/img/icons/information-button-svgrepo-com.svg" alt="Information" width="16" height="16">
+			<Image src="/img/icons/information-button-svgrepo-com.svg" alt="Information" width="16" height="16">
 		</button>
 	</div>
 	<SocialLinks />
