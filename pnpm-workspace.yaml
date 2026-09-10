@@ -21,3 +21,4 @@ minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
   - 'astro'
   - '@astrojs/*'
+  - '@biomejs/*'
