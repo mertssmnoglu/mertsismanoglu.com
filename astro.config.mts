@@ -8,6 +8,7 @@ import { SITE_URL } from './src/consts.ts'
 // https://astro.build/config
 export default defineConfig({
   site: SITE_URL,
+  compressHTML: false,
   integrations: [mdx(), sitemap()],
   vite: {
     plugins: [tailwindcss()],
