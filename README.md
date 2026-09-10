@@ -50,8 +50,8 @@ npm install -g pnpm@latest-10
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/mertssmnoglu/mertssmnoglu.github.io.git
-   cd mertssmnoglu.github.io
+   git clone https://github.com/mertssmnoglu/mertsismanoglu.com.git
+   cd mertsismanoglu.com
    ```
 
 2. **Install dependencies**
