@@ -11,6 +11,7 @@ overrides:
   astro@>=2.16.0 <5.15.5: '>=5.15.5'
   astro@>=5.2.0 <5.15.6: '>=5.15.6'
   diff@>=5.0.0 <5.2.2: '>=5.2.2'
+  fast-uri@>=3.0.0 <3.1.6: '>=3.1.6'
   fast-xml-parser@>=4.0.0-beta.3 <=5.5.5: '>=5.5.6'
   fast-xml-parser@>=4.0.0-beta.3 <=5.5.6: '>=5.5.7'
   glob@>=10.2.0 <10.5.0: '>=10.5.0'
@@ -1142,8 +1143,8 @@ packages:
   fast-string-width@1.1.0:
     resolution: {integrity: sha512-O3fwIVIH5gKB38QNbdg+3760ZmGz0SZMgvwJbA1b2TGXceKE6A2cOlfogh1iw8lr049zPyd7YADHy+B7U4W9bQ==}
 
-  fast-uri@3.1.0:
-    resolution: {integrity: sha512-iPeeDKJSWf4IEOasVVrknXpaBV0IApz/gp7S2bb7Z4Lljbl2MGJRqInZiUrQwV16cpzw/D3S5j5Julj/gT52AA==}
+  fast-uri@4.1.4:
+    resolution: {integrity: sha512-dODXrIxlS9JSdgAnhIUKOosKV1oMtU2VtVw87QRaHzyl5jxO290Ii5tEZfCfzfWNHi3jKWwBSdQj0qIyshdZdQ==}
 
   fast-wrap-ansi@0.1.6:
     resolution: {integrity: sha512-HlUwET7a5gqjURj70D5jl7aC3Zmy4weA1SHUfM0JFI0Ptq987NH2TwbBFLoERhfwk+E+eaq4EK3jXoT+R3yp3w==}
@@ -2730,7 +2731,7 @@ snapshots:
   ajv@8.18.0:
     dependencies:
       fast-deep-equal: 3.1.3
-      fast-uri: 3.1.0
+      fast-uri: 4.1.4
       json-schema-traverse: 1.0.0
       require-from-string: 2.0.2
 
@@ -3007,7 +3008,7 @@ snapshots:
     dependencies:
       fast-string-truncated-width: 1.2.1
 
-  fast-uri@3.1.0: {}
+  fast-uri@4.1.4: {}
 
   fast-wrap-ansi@0.1.6:
     dependencies:
