@@ -4,12 +4,12 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
+      "preset": "recommended",
       "a11y": {
-        "recommended": true
+        "preset": "recommended"
       },
       "performance": {
-        "recommended": true
+        "preset": "recommended"
       },
       "suspicious": {
         "noExplicitAny": "off",
