@@ -18,8 +18,10 @@ overrides:
   vite@>=6.0.0 <=6.4.0: '>=6.4.1'
   yaml@>=2.0.0 <2.8.3: '>=2.8.3'
   svgo@>=4.0.0 <4.1.0: '>=4.1.0'
+  fast-uri@>=4.1.3 <4.1.5: '>=4.1.5'
 minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
   - 'astro'
   - '@astrojs/*'
   - '@biomejs/*'
+  - 'fast-uri'
